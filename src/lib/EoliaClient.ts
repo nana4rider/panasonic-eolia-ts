@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { DateTime } from 'luxon';
 import { EoliaHttpError, EoliaTemperatureError } from './EoliaError';
 import { EoliaDevice } from './model/EoliaDevice';
 import { EoliaOperation } from './model/EoliaOperation';
@@ -36,7 +37,7 @@ class EoliaClient {
         requestConfig.headers.Cookie = 'atkn=' + this.accessToken;
       }
 
-      requestConfig.headers['X-Eolia-Date'] = this.getEoliaDate();
+      requestConfig.headers['X-Eolia-Date'] = DateTime.local().toFormat('yyyy-MM-dd\'T\'HH:mm:ss');
 
       return requestConfig;
     });
@@ -138,21 +139,6 @@ class EoliaClient {
     };
 
     return operation;
-  }
-
-  getEoliaDate(date = new Date()): string {
-    let eoliaDate = String(date.getFullYear());
-    eoliaDate += '-';
-    eoliaDate += String(date.getMonth() + 1).padStart(2, '0');
-    eoliaDate += '-';
-    eoliaDate += String(date.getDate()).padStart(2, '0');
-    eoliaDate += 'T';
-    eoliaDate += String(date.getHours()).padStart(2, '0');
-    eoliaDate += ':';
-    eoliaDate += String(date.getMinutes()).padStart(2, '0');
-    eoliaDate += ':';
-    eoliaDate += String(date.getSeconds()).padStart(2, '0');
-    return eoliaDate;
   }
 
   static isTemperatureSupport(mode: EoliaOperationMode): boolean {
