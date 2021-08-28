@@ -10,8 +10,8 @@ class EoliaClient {
   static readonly API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v2';
   static readonly TEMPERATURE_SUPPORT_MODES: EoliaOperationMode[] = ['Auto', 'Cooling', 'Heating', 'CoolDehumidifying'];
 
-  public static readonly MIN_TEMPERATURE = 16;
-  public static readonly MAX_TEMPERATURE = 30;
+  static readonly MIN_TEMPERATURE = 16;
+  static readonly MAX_TEMPERATURE = 30;
 
   private client: AxiosInstance;
 
