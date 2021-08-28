@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EoliaClient = void 0;
 const axios_1 = require("axios");
+const luxon_1 = require("luxon");
 const EoliaError_1 = require("./EoliaError");
 class EoliaClient {
     constructor(userId, password, accessToken, baseURL = EoliaClient.API_BASE_URL) {
@@ -32,7 +33,7 @@ class EoliaClient {
             if (this.accessToken) {
                 requestConfig.headers.Cookie = 'atkn=' + this.accessToken;
             }
-            requestConfig.headers['X-Eolia-Date'] = this.getEoliaDate();
+            requestConfig.headers['X-Eolia-Date'] = luxon_1.DateTime.local().toFormat('yyyy-MM-dd\'T\'HH:mm:ss');
             return requestConfig;
         });
         this.client.interceptors.response.use(response => {
@@ -124,20 +125,6 @@ class EoliaClient {
             operation_token: status.operation_token,
         };
         return operation;
-    }
-    getEoliaDate(date = new Date()) {
-        let eoliaDate = String(date.getFullYear());
-        eoliaDate += '-';
-        eoliaDate += String(date.getMonth() + 1).padStart(2, '0');
-        eoliaDate += '-';
-        eoliaDate += String(date.getDate()).padStart(2, '0');
-        eoliaDate += 'T';
-        eoliaDate += String(date.getHours()).padStart(2, '0');
-        eoliaDate += ':';
-        eoliaDate += String(date.getMinutes()).padStart(2, '0');
-        eoliaDate += ':';
-        eoliaDate += String(date.getSeconds()).padStart(2, '0');
-        return eoliaDate;
     }
     static isTemperatureSupport(mode) {
         return EoliaClient.TEMPERATURE_SUPPORT_MODES.includes(mode);
