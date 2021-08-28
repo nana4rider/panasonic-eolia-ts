@@ -1,0 +1,25 @@
+{
+  "name": "panasonic-eolia-ts",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dst/index.js",
+  "types": "dst/index.d.ts",
+  "license": "ISC",
+  "files": [
+    "dst"
+  ],
+  "scripts": {
+    "build": "tsc -p . --declarationMap",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "eslint": "^7.32.0",
+    "typescript": "^4.1.5"
+  }
+}
