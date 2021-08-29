@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "luxon": "^2.0.2"
+    "luxon": "^2.0.2",
+    "@types/luxon": "^2.0.1"
   },
   "devDependencies": {
-    "@types/luxon": "^2.0.1",
     "@types/node": "^16.7.1",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
