@@ -141,10 +141,10 @@ class EoliaClient {
     return operation;
   }
 
-  async getFunctions(productCode: string): Promise<Map<string, boolean>> {
+  async getFunctions(productCode: string): Promise<Set<string>> {
     const response = await this.client.get(`/products/${productCode}/functions`);
     const functionList: { function_id: string, function_value: boolean }[] = response.data.ac_function_list;
-    return functionList.reduce((prev, curr) => prev.set(curr.function_id, curr.function_value), new Map<string, boolean>());
+    return functionList.reduce((prev, curr) => curr.function_value ? prev.add(curr.function_id) : prev, new Set<string>());
   }
 
   static isTemperatureSupport(mode: EoliaOperationMode): boolean {

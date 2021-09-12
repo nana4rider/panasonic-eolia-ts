@@ -130,7 +130,7 @@ class EoliaClient {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.client.get(`/products/${productCode}/functions`);
             const functionList = response.data.ac_function_list;
-            return functionList.reduce((prev, curr) => prev.set(curr.function_id, curr.function_value), new Map());
+            return functionList.reduce((prev, curr) => curr.function_value ? prev.add(curr.function_id) : prev, new Set());
         });
     }
     static isTemperatureSupport(mode) {

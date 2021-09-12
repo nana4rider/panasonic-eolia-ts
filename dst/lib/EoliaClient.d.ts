@@ -18,7 +18,7 @@ declare class EoliaClient {
     getDeviceStatus(applianceId: string): Promise<EoliaStatus>;
     setDeviceStatus(operation: EoliaOperation): Promise<EoliaStatus>;
     createOperation(status: EoliaStatus): EoliaOperation;
-    getFunctions(productCode: string): Promise<Map<string, boolean>>;
+    getFunctions(productCode: string): Promise<Set<string>>;
     static isTemperatureSupport(mode: EoliaOperationMode): boolean;
 }
 export { EoliaClient };
