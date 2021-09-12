@@ -126,6 +126,13 @@ class EoliaClient {
         };
         return operation;
     }
+    getFunctions(productCode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.client.get(`/products/${productCode}/functions`);
+            const functionList = response.data.ac_function_list;
+            return functionList.reduce((prev, curr) => prev.set(curr.function_id, curr.function_value), new Map());
+        });
+    }
     static isTemperatureSupport(mode) {
         return EoliaClient.TEMPERATURE_SUPPORT_MODES.includes(mode);
     }
