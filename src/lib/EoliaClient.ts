@@ -1,20 +1,39 @@
 import axios, { AxiosInstance } from 'axios';
 import { DateTime } from 'luxon';
 import { EoliaHttpError, EoliaTemperatureError } from './EoliaError';
+import { EoliaBase } from './model/EoliaBase';
 import { EoliaDevice } from './model/EoliaDevice';
 import { EoliaOperation } from './model/EoliaOperation';
 import { EoliaOperationMode } from './model/EoliaOperationMode';
 import { EoliaStatus } from './model/EoliaStatus';
 
 class EoliaClient {
-  static readonly API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v2';
+  private static readonly API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v2';
+
+  /**
+   * 温度設定をサポートしている操作モード
+   */
   static readonly TEMPERATURE_SUPPORT_MODES: EoliaOperationMode[] = ['Auto', 'Cooling', 'Heating', 'CoolDehumidifying'];
 
+  /**
+   * 設定できる最低温度
+   */
   static readonly MIN_TEMPERATURE = 16;
+
+  /**
+   * 設定できる最高温度
+   */
   static readonly MAX_TEMPERATURE = 30;
 
   private client: AxiosInstance;
 
+  /**
+   * コンストラクタ
+   *
+   * @param userId ログインID
+   * @param password パスワード
+   * @param accessToken アクセストークン
+   */
   constructor(private userId: string, private password: string, public accessToken?: string,
     baseURL: string = EoliaClient.API_BASE_URL) {
 
@@ -73,6 +92,10 @@ class EoliaClient {
     });
   }
 
+  /**
+   * ログイン
+   * 通常このメソッドは自動的に呼び出されるため、明示的に呼び出す必要はありません。
+   */
   async login(userId = this.userId, password = this.password,
     options = {}) {
     const response = await this.client.post('/auth/login', {
@@ -89,21 +112,37 @@ class EoliaClient {
     return response.data;
   }
 
+  /**
+   * ログアウト
+   */
   async logout() {
     const response = await this.client.post('/auth/logout');
     return response.data;
   }
 
+  /**
+   * デバイスリストを取得します。
+   */
   async getDevices(): Promise<EoliaDevice[]> {
     const response = await this.client.get('/devices');
     return response.data.ac_list;
   }
 
+  /**
+   * デバイス情報を取得します。
+   *
+   * @param applianceId 機器ID
+   */
   async getDeviceStatus(applianceId: string): Promise<EoliaStatus> {
     const response = await this.client.get(`/devices/${applianceId}/status`);
     return { ...response.data, operation_token: null };
   }
 
+  /**
+   * デバイス情報を更新します。
+   *
+   * @param operation 更新情報
+   */
   async setDeviceStatus(operation: EoliaOperation): Promise<EoliaStatus> {
     if (operation.operation_mode === 'Stop') {
       operation.operation_mode = 'Auto';
@@ -115,6 +154,11 @@ class EoliaClient {
     return response.data;
   }
 
+  /**
+   * デバイス情報から、更新情報を作成します。
+   *
+   * @param status デバイス情報
+   */
   createOperation(status: EoliaStatus): EoliaOperation {
     if (EoliaClient.isTemperatureSupport(status.operation_mode)
       && (status.temperature < EoliaClient.MIN_TEMPERATURE
@@ -122,31 +166,34 @@ class EoliaClient {
       throw new EoliaTemperatureError(status.temperature);
     }
 
-    const operation: EoliaOperation = {
-      appliance_id: status.appliance_id,
-      operation_status: status.operation_status,
-      nanoex: status.nanoex,
-      wind_volume: status.wind_volume,
-      air_flow: status.air_flow,
-      wind_direction: status.wind_direction,
-      wind_direction_horizon: status.wind_direction_horizon,
-      timer_value: status.timer_value,
-      operation_mode: status.operation_mode,
-      temperature: status.temperature,
-      ai_control: status.ai_control,
-      airquality: status.airquality,
-      operation_token: status.operation_token,
-    };
+    const keys: (keyof EoliaBase)[] = [
+      'appliance_id', 'operation_status', 'nanoex', 'wind_volume',
+      'air_flow', 'wind_direction', 'wind_direction_horizon', 'timer_value',
+      'operation_mode', 'temperature', 'ai_control', 'airquality',
+      'operation_token'
+    ];
 
-    return operation;
+    return keys.reduce((obj, curr) => obj[curr] = status[curr], {} as any);
   }
 
+  /**
+   * 指定した機種がサポートしている機能を取得します。
+   *
+   * @param productCode 機種コード
+   * @returns サポートしている機能
+   */
   async getFunctions(productCode: string): Promise<Set<string>> {
     const response = await this.client.get(`/products/${productCode}/functions`);
     const functionList: { function_id: string, function_value: boolean }[] = response.data.ac_function_list;
     return functionList.reduce((prev, curr) => curr.function_value ? prev.add(curr.function_id) : prev, new Set<string>());
   }
 
+  /**
+   * 温度設定をサポートしている操作モードかを判定します。
+   *
+   * @param mode 操作モード
+   * @returns 温度設定をサポートしているか
+   */
   static isTemperatureSupport(mode: EoliaOperationMode): boolean {
     return EoliaClient.TEMPERATURE_SUPPORT_MODES.includes(mode);
   }
