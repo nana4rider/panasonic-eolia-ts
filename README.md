@@ -2,6 +2,7 @@
 
 Panasonic Eolia Client
 
+## 利用方法
 ```ts
 const client = new EoliaClient('userId', 'password');
 
