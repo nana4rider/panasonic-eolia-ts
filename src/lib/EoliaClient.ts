@@ -173,7 +173,12 @@ class EoliaClient {
       'operation_token'
     ];
 
-    return keys.reduce((obj, curr) => obj[curr] = status[curr], {} as any);
+    const operation: EoliaOperation = keys.reduce((obj, key) => {
+      obj[key] = status[key];
+      return obj;
+    }, {} as any);
+
+    return operation;
   }
 
   /**
