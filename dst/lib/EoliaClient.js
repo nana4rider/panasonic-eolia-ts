@@ -147,7 +147,11 @@ class EoliaClient {
             'operation_mode', 'temperature', 'ai_control', 'airquality',
             'operation_token'
         ];
-        return keys.reduce((obj, curr) => obj[curr] = status[curr], {});
+        const operation = keys.reduce((obj, key) => {
+            obj[key] = status[key];
+            return obj;
+        }, {});
+        return operation;
     }
     /**
      * 指定した機種がサポートしている機能を取得します。
