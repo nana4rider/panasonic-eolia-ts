@@ -121,9 +121,6 @@ class EoliaClient {
      */
     setDeviceStatus(operation) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (operation.operation_mode === 'Stop') {
-                operation.operation_mode = 'Auto';
-            }
             const applianceId = operation.appliance_id;
             const response = yield this.client.put(`/devices/${applianceId}/status`, operation);
             operation.operation_token = response.data.operation_token;
@@ -151,6 +148,12 @@ class EoliaClient {
             obj[key] = status[key];
             return obj;
         }, {});
+        if (operation.operation_mode === 'Stop') {
+            operation.operation_mode = 'Auto';
+        }
+        else if (operation.operation_mode === 'Nanoe') {
+            operation.operation_mode = 'Blast';
+        }
         return operation;
     }
     /**
