@@ -61,7 +61,7 @@ class EoliaClient {
             if (error.response.status === 401 && !error.config._retry) {
                 error.config._retry = true;
                 yield this.login();
-                return yield this.client.request(error.config);
+                return this.client.request(error.config);
             }
             if (error.response.data.code) {
                 throw new EoliaError_1.EoliaHttpError(error, httpStatus, data.code, data.message);

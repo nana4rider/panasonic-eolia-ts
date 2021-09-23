@@ -1,6 +1,6 @@
 {
   "name": "panasonic-eolia-ts",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "dst/index.js",
   "types": "dst/index.d.ts",
   "license": "ISC",
