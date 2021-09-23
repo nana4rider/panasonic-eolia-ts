@@ -193,4 +193,8 @@ EoliaClient.MIN_TEMPERATURE = 16;
  * 設定できる最高温度
  */
 EoliaClient.MAX_TEMPERATURE = 30;
+/**
+ * 操作トークンが有効な時間(ミリ秒)
+ */
+EoliaClient.OPERATION_TOKEN_LIFETIME = 120000;
 //# sourceMappingURL=EoliaClient.js.map

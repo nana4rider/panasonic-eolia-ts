@@ -25,6 +25,11 @@ class EoliaClient {
    */
   static readonly MAX_TEMPERATURE = 30;
 
+  /**
+   * 操作トークンが有効な時間(ミリ秒)
+   */
+  static readonly OPERATION_TOKEN_LIFETIME = 120000;
+
   private client: AxiosInstance;
 
   /**
