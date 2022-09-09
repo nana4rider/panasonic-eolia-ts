@@ -1,4 +1,10 @@
+import { EoliaAiControl } from './EoliaAiControl';
+import { EoliaAirFlow } from './EoliaAirFlow';
 import { EoliaOperationMode } from './EoliaOperationMode';
+import { EoliaTimerValue } from './EoliaTimerValue';
+import { EoliaWindDirection } from './EoliaWindDirection';
+import { EoliaWindDirectionHorizon } from './EoliaWindDirectionHorizon';
+import { EoliaWindVolume } from './EoliaWindVolume';
 
 export interface EoliaBase {
   /** 機器ID */
@@ -13,32 +19,29 @@ export interface EoliaBase {
   /** ナノイーX */
   nanoex: boolean;
 
-  /** 風量 0:auto */
-  wind_volume: 0 | 2 | 3 | 4 | 5;
+  /** 風量 */
+  wind_volume: EoliaWindVolume;
 
-  /**  風量オプション 通常 | パワフル | ロング | 静か */
-  air_flow: 'not_set' | 'powerful' | 'long' | 'quiet';
+  /** 風量オプション */
+  air_flow: EoliaAirFlow;
 
-  /** 風向上下 0:自動 */
-  wind_direction: 0 | 1 | 2 | 3 | 4 | 5
+  /** 風向上下 */
+  wind_direction: EoliaWindDirection
 
   /** 風向き左右 */
-  wind_direction_horizon: 'auto' | 'nearby_left' | 'to_left' | 'to_right' | 'nearby_right' | 'front'
+  wind_direction_horizon: EoliaWindDirectionHorizon
 
   /** 切タイマー */
-  timer_value: 0 | 30 | 60 | 90 | 120;
+  timer_value: EoliaTimerValue;
 
-  /** モード
-    * 停止 | 自動 | 冷房 | 暖房 | 除湿
-    * 冷房除湿 | 衣類乾燥 | 送風 | おそうじ | おでかけクリーン
-    */
+  /** 運転モード */
   operation_mode: EoliaOperationMode;
 
   /** 温度 min:16 max:30 step:0.5 */
   temperature: number;
 
-  /** AIオフ | AI 快適 | AI エコナビ */
-  ai_control: 'off' | 'comfortable' | 'comfortable_econavi';
+  /** AIコントロール */
+  ai_control: EoliaAiControl;
 
   /** 不明 */
   airquality: false;

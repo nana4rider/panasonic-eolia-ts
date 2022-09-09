@@ -4,5 +4,11 @@
 *
 * 送風かつnanoex=trueの場合、ナノイー扱いになる？
 */
-export type EoliaOperationMode = 'Stop' | 'Auto' | 'Cooling' | 'Heating' | 'ComfortableDehumidification'
-  | 'CoolDehumidifying' | 'ClothesDryer' | 'Blast' | 'Nanoe' | 'Cleaning' | 'NanoexCleaning';
+const EoliaOperationMode = [
+  'Stop', 'Auto', 'Cooling', 'Heating', 'ComfortableDehumidification',
+  'CoolDehumidifying', 'ClothesDryer', 'Blast', 'Nanoe', 'Cleaning', 'NanoexCleaning'
+] as const;
+
+type EoliaOperationMode = typeof EoliaOperationMode[number];
+
+export { EoliaOperationMode };

@@ -57,6 +57,10 @@ class EoliaClient {
     this.client.interceptors.request.use(requestConfig => {
       // console.log('[axios]', requestConfig.method, requestConfig.url);
 
+      if (!requestConfig.headers) {
+        return;
+      }
+
       if (this.accessToken) {
         requestConfig.headers.Cookie = 'atkn=' + this.accessToken;
       }
