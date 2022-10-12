@@ -8,7 +8,7 @@ import { EoliaOperationMode } from './model/EoliaOperationMode';
 import { EoliaStatus } from './model/EoliaStatus';
 
 class EoliaClient {
-  private static readonly API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v2';
+  private static readonly API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v5';
 
   /**
    * 温度設定をサポートしている操作モード

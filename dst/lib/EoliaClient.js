@@ -183,7 +183,7 @@ class EoliaClient {
     }
 }
 exports.EoliaClient = EoliaClient;
-EoliaClient.API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v2';
+EoliaClient.API_BASE_URL = 'https://app.rac.apws.panasonic.com/eolia/v5';
 /**
  * 温度設定をサポートしている操作モード
  */
